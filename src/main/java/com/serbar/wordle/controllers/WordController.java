@@ -1,5 +1,6 @@
 package com.serbar.wordle.controllers;
 
+import com.serbar.wordle.exceptions.HashNotExistException;
 import com.serbar.wordle.exceptions.WordNotExistException;
 import com.serbar.wordle.pojo.WordHashResponse;
 import com.serbar.wordle.pojo.WordResponse;
@@ -9,10 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
 import javax.websocket.server.PathParam;
-import java.security.InvalidKeyException;
 
 @RestController
 @RequestMapping("/api/v1/word/")
@@ -25,9 +23,7 @@ public class WordController {
     }
 
     @GetMapping("/random")
-    public WordHashResponse getRandomWord()
-            throws IllegalBlockSizeException, BadPaddingException, InvalidKeyException
-    {
+    public WordHashResponse getRandomWord() {
         return new WordHashResponse(wordService.generateRandomWordHash());
     }
 
@@ -38,7 +34,7 @@ public class WordController {
 
     @GetMapping("/{expected_word_hash}/check")
     public WordResponse check(@PathParam("expected_word_hash") String wordHash, @RequestParam String word)
-            throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException, WordNotExistException
+            throws WordNotExistException, HashNotExistException
     {
         return new WordResponse(wordService.processHashWord(wordHash, word));
     }
