@@ -35,7 +35,7 @@ public class WordManager {
     }
 
     public void checkWord(String word) throws WordNotExistException {
-        if (!this.wordSet.contains(word)) {
+        if (!this.wordSet.contains(word.toLowerCase())) {
             throw new WordNotExistException(word);
         }
     }

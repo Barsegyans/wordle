@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class WordService {
@@ -46,13 +47,16 @@ public class WordService {
             throw new RuntimeException("Words length not equal");
         }
         List<LetterResponse> result = new ArrayList<>();
-        for (int i = 0; i < word.length(); i++) {
-            if (word.charAt(i) == expectedWord.charAt(i)) {
-                result.add(new LetterResponse(word.charAt(i), State.PRESENT_IN_PlACE));
-            } else if (expectedWord.contains("" + word.charAt(i))) {
-                result.add(new LetterResponse(word.charAt(i), State.PRESENT));
+        String expectedWordLc = expectedWord.toLowerCase();
+        String wordLc = word.toLowerCase(Locale.ROOT);
+
+        for (int i = 0; i < wordLc.length(); i++) {
+            if (wordLc.charAt(i) == expectedWordLc.charAt(i)) {
+                result.add(new LetterResponse(wordLc.charAt(i), State.PRESENT_IN_PlACE));
+            } else if (expectedWordLc.contains("" + wordLc.charAt(i))) {
+                result.add(new LetterResponse(wordLc.charAt(i), State.PRESENT));
             } else {
-                result.add(new LetterResponse(word.charAt(i), State.NOT_PRESENT));
+                result.add(new LetterResponse(wordLc.charAt(i), State.NOT_PRESENT));
             }
         }
         return result;

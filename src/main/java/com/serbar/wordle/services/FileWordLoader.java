@@ -25,6 +25,7 @@ public class FileWordLoader implements WordLoader {
                 .lines()
                 .filter(FileWordLoader::checkSize)
                 .filter(FileWordLoader::wordIsCorrect)
+                .map(String::toLowerCase)
                 .collect(Collectors.toSet());
     }
 
